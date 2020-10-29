@@ -434,11 +434,12 @@ def log_in_Screen(name):
     print("(8) New Skill")
     print("(9) Useful links")
     print("(10) Important links")
-    print("(11) Sign Out")
+    print("(11) Send Message")
+    print("(12) Sign Out")
     choice = input("Your selection: ")
 
     #check the right value of input from user
-    choice = check.check_option(choice,1,11)
+    choice = check.check_option(choice,1,12)
     
     if(choice == "1"): 
         manage = m.Manage()
@@ -502,6 +503,8 @@ def log_in_Screen(name):
     elif(choice == "10"):
         importantLinks_Screen(1, name)
     elif(choice == "11"):
+        send_message(name)
+    elif(choice == "12"):
         welcomeScreen()
 
 def sign_up_Screen():
@@ -990,12 +993,12 @@ def job_Screen(name):
                     count +=1
                     print (str(count) + ": " + element)
             else:
-                print("You don't have any saved job")
+                print("You don't have any saved jobs")
             
             if len(list_save_job) != 0:
 
                 print("Do you want to unmark a job in saved jobs?")
-                print("Select one of the below option:")
+                print("Select one of the below options:")
                 print("(1) Unmark")
                 print("(2) Keep saved jobs")
                 choice = input("Your selection: ")
@@ -1006,7 +1009,7 @@ def job_Screen(name):
                     for element in list_save_job:
                         print()
                         print("Do you want to unmark the job that has the title " + "\"" + element + "\"")
-                        print("Select one of the below option:")
+                        print("Select one of the below options:")
                         print("(1) Yes")
                         print("(2) No")
                         choice = input("Your selection: ")
@@ -1067,4 +1070,66 @@ def delete_application(name, title):
         for element in st:
             writer_csv.writerow(element)
 
+##########################################SENDING MESSAGE FEATURE#########################################
+#same functionalitty as display_friends but that one had a view profile feature integrated in it, soooooo
+def get_friends(name):
+    friends = list()
 
+    with open(FILENAME_FRI, 'r') as my_file:
+        is_blank = len(my_file.read().strip())
+    if is_blank == 0:
+        print("You currently do not have anyone added to your friends list.")
+        log_in_Screen(name)
+    else:
+        with open('student_data.csv', newline='') as g:
+            userReader = csv.reader(g)
+            usernames = list(userReader)
+        print("Your friends are: ")
+        with open(FILENAME_FRI, newline='') as f:
+            friReader = csv.reader(f)
+            data = list(friReader)
+        for user in data:    #checks all friends
+            if name in user: #if user is found in a friend pairing
+                index = user.index(name)    
+                if index==0:
+                    friend=1
+                    uname=user[friend]
+                    num = -1
+                    for i in usernames: #searches through student data for first and last name
+                        num = num + 1
+                        if(num%2==0):
+                            if i[0]==uname:
+                                print('1. '+uname+' '+i[2]+' '+i[3])
+                                friends.append(uname)
+                                break
+    return friends
+
+    
+def send_message(name):
+    #get the tier account of the user. name == username
+    with open(FILENAME_STD, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row != [] and (row[0] == name):
+                tier = row[4]
+
+    if tier == "standard":
+        #generate list of friends, returns a list of their user names
+        friends_by_uname = get_friends(name)
+        print(friends_by_uname[0])
+
+        if len(friends_by_uname) > 0:
+            #give choice of which friend to message
+            choice = input("Select a friend to send a message to by the number: ")
+            choice = check.check_option(choice,1,len(friends_by_uname))
+        
+            sendTo = friends_by_uname[int(choice)-1]
+
+            #prompt them to send a message
+            message = input("Message being sent to user name "+sendTo+":\n")
+
+            #set up a way to notify the friend (check the pending friend method)
+
+
+    #still need to do certain things if
+    #elif tier == "plus"

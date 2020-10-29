@@ -1,10 +1,1 @@
-Porter,TransportsItems,Bridges,UCA,10,TP1
-Developer,WritesCode,USF,FL,20,TP2
-Tester1,Tests,USF,FL,20,DP
-Tester2,Tests,USF,FL,20,KP
-SCRUMMaster,ManagesSCRUM,USF,FL,30,YQ
-Sixth,6th test,Bridges,UCA,10,TP1
-Seventh,7th test,USF,FL,20,TP2
-Eighth,8th test,USF,FL,20,DP
-Nineth,9th test,USF,FL,20,KP
-Tenth,10th test,USF,FL,30,YQ
+Title,Description,Employer,Location,Salary,Post_Name

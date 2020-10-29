@@ -206,12 +206,12 @@ class Manage:
         if len(self.__list_student) < 11:
             self.__list_student.append(student)
             user_name = student.get_user_name()
-            print("\nCongratulate",student.get_name(), "\nYou signed up and logged in successfully!")
+            print("\nCongratulations, ",student.get_name(), "!\nYou signed up and logged in successfully!")
 
             #need to add a new student to student_data.csv
             with open(FILENAME,"a") as file:
                 writer_csv = csv.writer(file)
-                writer_csv.writerow((student.get_user_name(),student.get_password(),student.get_first(),student.get_last()))  
+                writer_csv.writerow((student.get_user_name(),student.get_password(),student.get_first(),student.get_last(),student.get_tier()))  
 
             #create settings associated with this user
             with open(FILENAME_STG, "a") as file_stg:
@@ -270,6 +270,18 @@ class Manage:
         first = input("Enter first name: ")
         last = input("Enter last name: ")
 
+        #present new user with option to sign up for plus
+        tier = ''
+        while tier == '':
+            isPlus = input("Would you like to sign up for a InCollege plus account? (y/n)")
+            if isPlus == 'y':
+                tier = 'plus'
+                print("Thank you for signing up for Plus! We will start billing you $10/month.")
+            elif isPlus == 'n':
+                tier = 'standard'
+            else:
+                print("invalid response. try again.\n")
+
         #create a new object of class Password_account
         p = check.Password_account()
 
@@ -278,7 +290,7 @@ class Manage:
             password = input ("Please enter a password again: ")
 
         #create a new object of student class and add the object the student_data.csv file
-        student = s.Student(user_name, password, first, last)
+        student = s.Student(user_name, password, first, last, tier)
         return manage.add_student(student)
 
 
